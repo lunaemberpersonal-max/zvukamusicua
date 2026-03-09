@@ -67,10 +67,23 @@ margin-bottom:30px;
 
 <div class="song">
 <h3>ZVUKA Music UA "Глас Небес" — Потужна пісня про незламний дух України</h3>
-<button class="download" onclick="downloadSong('https://github.com/download-music/zvukamusicua/raw/refs/heads/main/zvukamusicua%20-%20ZVUKA%20Music%20UA%20-%D0%93%D0%BB%D0%B0%D1%81%20%D0%9D%D0%B5%D0%B1%D0%B5%D1%81-.mp3')">
-Скачати
-</button>
+<button onclick="downloadFile()">Скачати</button>
+  <script>
+function downloadFile(){
+
+if(localStorage.getItem("downloaded")){
+alert("File already downloaded");
+return;
+}
+
+localStorage.setItem("downloaded",true);
+
+window.location.href="https://github.com/download-music/zvukamusicua/raw/refs/heads/main/zvukamusicua%20-%20ZVUKA%20Music%20UA%20-%D0%93%D0%BB%D0%B0%D1%81%20%D0%9D%D0%B5%D0%B1%D0%B5%D1%81-.mp3";
+}
+</script>
 </div>
+
+  
 
 <!-- <div class="song">
 <h3>Пісня 2</h3>
