@@ -1,169 +1,188 @@
 <!DOCTYPE html>
-<html>
+<html lang="uk">
 <head>
-<meta charset="UTF-8">
-<title>Моя музика</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Моя музика</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      background: #f5f5f5;
+      padding: 40px 16px;
+    }
 
-<style>
-body{
-font-family:Arial;
-text-align:center;
-margin-top:40px;
-background:#f5f5f5;
-}
+    .container {
+      max-width: 700px;
+      margin: 0 auto;
+    }
 
-.container{
-width:600px;
-margin:auto;
-}
+    .song {
+      background: #fff;
+      padding: 20px;
+      margin: 15px 0;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
 
-.song{
-background:white;
-padding:20px;
-margin:15px;
-border-radius:10px;
-box-shadow:0 0 10px rgba(0,0,0,0.1);
-}
+    button {
+      padding: 12px 25px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
 
-button{
-padding:12px 25px;
-font-size:16px;
-border:none;
-border-radius:8px;
-cursor:pointer;
-}
+    .download {
+      background: #4caf50;
+      color: #fff;
+    }
 
-.download{
-background:#4CAF50;
-color:white;
-}
+    .download:disabled {
+      background: #9e9e9e;
+      cursor: not-allowed;
+    }
 
-.donate{
-background:#000;
-color:white;
-margin-bottom:30px;
-}
-</style>
-
+    .donate {
+      display: inline-block;
+      background: #000;
+      color: #fff;
+      margin: 8px;
+      text-decoration: none;
+      padding: 12px 25px;
+      font-size: 16px;
+      border-radius: 8px;
+    }
+  </style>
 </head>
-
 <body>
+  <div class="container">
+    <h1>Моя AI музика</h1>
+    <p>Скачування безкоштовне, але можете підтримати автора.</p>
 
-<div class="container">
+    <a class="donate" href="https://www.privat24.ua/send/iz2bk" target="_blank" rel="noopener noreferrer">Підтримати через Приват Банк</a>
 
-<h1>Моя AI музика 🎧</h1>
+    <a class="donate" href="https://send.monobank.ua/jar/3BSnRdBti2" target="_blank" rel="noopener noreferrer">Підтримати через Monobank</a>
 
-<p>Скачування безкоштовне, але можете підтримати автора ❤️</p>
+    <div id="songs"></div>
+  </div>
 
-<a href="https://www.privat24.ua/send/iz2bk" target="_blank">
-<button class="donate">Підтримати через Приват Банк</button>
-</a>
-  
-</br>
-  
-<a href="https://send.monobank.ua/jar/3BSnRdBti2" target="_blank">
-<button class="donate">Підтримати через Monobank</button>
-</a>
+  <script>
+    const songs = [
+      {
+        title: 'ZVUKA Music UA "Глас Небес" - Потужна пісня про незламний дух України',
+        file: 'zvukamusicua - ZVUKA Music UA -Глас Небес-.mp3'
+      },
+      {
+        title: 'Вчора приснився сон прекрасний - пісня-мрія кожного українця | ZVUKA Music UA',
+        file: 'Вчора приснився сон прекрасний —.mp3'
+      },
+      {
+        title: 'Мій заповіт',
+        file: 'Мій заповіт.mp3'
+      },
+      {
+        title: 'Незламні',
+        file: 'Незламні.mp3'
+      },
+      {
+        title: 'Тіні війни',
+        file: 'Тіні війни.mp3'
+      }
+    ];
 
-<div class="song">
-<h3>ZVUKA Music UA "Глас Небес" — Потужна пісня про незламний дух України</h3>
-<button onclick="downloadFile()">Скачати</button>
-<script>
-function downloadFile(){
-if(localStorage.getItem("downloaded")){
-alert("File already downloaded");
-return;
-}
-localStorage.setItem("downloaded",true);
-window.location.href="https://github.com/download-music/zvukamusicua/raw/refs/heads/main/zvukamusicua%20-%20ZVUKA%20Music%20UA%20-%D0%93%D0%BB%D0%B0%D1%81%20%D0%9D%D0%B5%D0%B1%D0%B5%D1%81-.mp3";
-}
-</script>
-</div>
+    const REMOTE_MUSIC_BASE_URL = 'https://raw.githubusercontent.com/download-music/zvukamusicua/main/music/';
 
-  <div class="song">
-<h3>Вчора приснився сон прекрасний — пісня-мрія кожного українця | ZVUKA Music UA</h3>
-<button onclick="downloadFile()">Скачати</button>
-<script>
-function downloadFile(){
-if(localStorage.getItem("downloaded")){
-alert("File already downloaded");
-return;
-}
-localStorage.setItem("downloaded",true);
-window.location.href="https://github.com/download-music/zvukamusicua/raw/refs/heads/main/%D0%92%D1%87%D0%BE%D1%80%D0%B0%20%D0%BF%D1%80%D0%B8%D1%81%D0%BD%D0%B8%D0%B2%D1%81%D1%8F%20%D1%81%D0%BE%D0%BD%20%D0%BF%D1%80%D0%B5%D0%BA%D1%80%D0%B0%D1%81%D0%BD%D0%B8%D0%B9%20%E2%80%94.mp3";
-}
-</script>
-</div>
-  ////////////////////////////////////////////////////////
-  <div class="song">
-<h3>Мій Заповіт</h3>
-<button onclick="downloadFile()">Скачати</button>
-<script>
-function downloadFile(){
-if(localStorage.getItem("downloaded")){
-alert("File already downloaded");
-return;
-}
-localStorage.setItem("downloaded",true);
-window.location.href="https://github.com/download-music/zvukamusicua/raw/refs/heads/main/%D0%9C%D1%96%D0%B9%20%D0%B7%D0%B0%D0%BF%D0%BE%D0%B2%D1%96%D1%82.mp3";
-}
-</script>
-</div>
-  /////////////////////////////////////////////////////////////////////
-  <div class="song">
-<h3>Незламні>
-<button onclick="downloadFile()">Скачати</button>
-<script>
-function downloadFile(){
-if(localStorage.getItem("downloaded")){
-alert("File already downloaded");
-return;
-}
-localStorage.setItem("downloaded",true);
-window.location.href="https://github.com/download-music/zvukamusicua/raw/refs/heads/main/%D0%9D%D0%B5%D0%B7%D0%BB%D0%B0%D0%BC%D0%BD%D1%96.mp3";
-}
-</script>
-</div>
-  //////////////////////////////////////////////////////////////////////
- ////////////////////
-  <div class="song">
-<h3>Тіні Війни</h3>
-<button onclick="downloadFile()">Скачати</button>
-<script>
-function downloadFile(){
-if(localStorage.getItem("downloaded")){
-alert("File already downloaded");
-return;
-}
-localStorage.setItem("downloaded",true);
-window.location.href="https://github.com/download-music/zvukamusicua/raw/refs/heads/main/%D0%A2%D1%96%D0%BD%D1%96%20%D0%B2%D1%96%D0%B9%D0%BD%D0%B8.mp3";
-}
-</script>
-</div>
-  ////////////////////////////////////////////////////////
-  
+    function getSongDownloadKey(fileName) {
+      return `downloaded:${encodeURIComponent(fileName)}`;
+    }
 
-<!-- <div class="song">
-<h3>Пісня 2</h3>
-<button class="download" onclick="downloadSong('files/song2.mp3')">
-Скачати
-</button>
-</div>
+    function hasDownloadedSong(fileName) {
+      return localStorage.getItem(getSongDownloadKey(fileName)) === 'true';
+    }
 
-<div class="song">
-<h3>Пісня 3</h3>
-<button class="download" onclick="downloadSong('files/song3.mp3')">
-Скачати
-</button>
-</div> -->
+    function markSongDownloaded(fileName) {
+      localStorage.setItem(getSongDownloadKey(fileName), 'true');
+    }
 
-</div>
+    function setButtonAsDownloaded(button) {
+      button.disabled = true;
+      button.textContent = 'Вже скачано';
+    }
 
-<script>
-function downloadSong(link){
-window.location.href = link;
-}
-</script>
+    function triggerDownload(url, fileName) {
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    }
 
+    function buildSourceFileUrl(fileName) {
+      const encodedFileName = encodeURIComponent(fileName);
+      if (window.location.protocol === 'file:') {
+        return `${REMOTE_MUSIC_BASE_URL}${encodedFileName}`;
+      }
+      return `music/${encodedFileName}`;
+    }
+
+    async function downloadSong(fileName, button) {
+      if (hasDownloadedSong(fileName)) {
+        setButtonAsDownloaded(button);
+        alert('Цю пісню вже було скачано. Повторне скачування недоступне.');
+        return;
+      }
+
+      button.disabled = true;
+      button.textContent = 'Завантаження...';
+
+      try {
+        const fileUrl = buildSourceFileUrl(fileName);
+        const response = await fetch(fileUrl);
+
+        if (!response.ok) {
+          throw new Error('Не вдалося отримати файл.');
+        }
+
+        const fileBuffer = await response.arrayBuffer();
+        // Use octet-stream to reduce chance of browser opening audio inline.
+        const blob = new Blob([fileBuffer], { type: 'application/octet-stream' });
+        const objectUrl = URL.createObjectURL(blob);
+
+        triggerDownload(objectUrl, fileName);
+
+        setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
+        markSongDownloaded(fileName);
+        setButtonAsDownloaded(button);
+      } catch (error) {
+        button.disabled = false;
+        button.textContent = 'Скачати';
+        alert('Помилка завантаження. Перевірте інтернет і наявність файлу в репозиторії.');
+      }
+    }
+
+    const songsContainer = document.getElementById('songs');
+
+    songs.forEach((song) => {
+      const songBlock = document.createElement('div');
+      songBlock.className = 'song';
+
+      const title = document.createElement('h3');
+      title.textContent = song.title;
+
+      const button = document.createElement('button');
+      button.className = 'download';
+      button.type = 'button';
+      button.textContent = hasDownloadedSong(song.file) ? 'Вже скачано' : 'Скачати';
+      button.disabled = hasDownloadedSong(song.file);
+      button.addEventListener('click', () => downloadSong(song.file, button));
+
+      songBlock.appendChild(title);
+      songBlock.appendChild(button);
+      songsContainer.appendChild(songBlock);
+    });
+  </script>
 </body>
 </html>
