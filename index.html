@@ -4,6 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ZVUKA Music UA</title>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-755EEPE2PX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    gtag('config', 'G-755EEPE2PX');
+  </script>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -90,6 +99,22 @@
     .socials a:hover {
       text-decoration: underline;
     }
+
+    .stats {
+      margin-top: 30px;
+      background: #e8f5e9;
+      border: 1px solid #81c784;
+      border-radius: 10px;
+      padding: 16px;
+      color: #1b5e20;
+    }
+
+    .download-count {
+      font-size: 12px;
+      color: #666;
+      margin-top: 8px;
+      font-style: italic;
+    }
   </style>
 </head>
 <body>
@@ -110,6 +135,8 @@
     <div id="browserHint" class="hint" hidden></div>
 
     <div id="songs"></div>
+
+    <div id="stats" class="stats"></div>
   </div>
 
   <script>
@@ -196,6 +223,21 @@
       return `music/${encodedFileName}`;
     }
 
+    function trackDownloadAnalytics(fileName) {
+      if (typeof window.gtag !== 'function') {
+        return;
+      }
+
+      const matchedSong = songs.find((song) => song.file === fileName);
+      const songTitle = matchedSong ? matchedSong.title : fileName;
+
+      window.gtag('event', 'download_song', {
+        song_title: songTitle,
+        file_name: fileName,
+        method: 'direct_download'
+      });
+    }
+
     async function downloadSong(fileName, button) {
       button.disabled = true;
       button.textContent = 'Завантаження...';
@@ -215,6 +257,11 @@
 
         triggerDownload(objectUrl, fileName);
 
+        trackDownloadAnalytics(fileName);
+
+        // Track download
+        incrementDownloadCount(fileName);
+
         setTimeout(() => URL.revokeObjectURL(objectUrl), 1000);
         button.disabled = false;
         button.textContent = 'Скачати';
@@ -232,9 +279,51 @@
 
     const songsContainer = document.getElementById('songs');
 
+    function getDownloadCount(fileName) {
+      const counts = JSON.parse(localStorage.getItem('downloadStats') || '{}');
+      return counts[fileName] || 0;
+    }
+
+    function incrementDownloadCount(fileName) {
+      const counts = JSON.parse(localStorage.getItem('downloadStats') || '{}');
+      counts[fileName] = (counts[fileName] || 0) + 1;
+      localStorage.setItem('downloadStats', JSON.stringify(counts));
+      updateSongCount(fileName);
+      updateStats();
+    }
+
+    function updateStats() {
+      const statsContainer = document.getElementById('stats');
+      const counts = JSON.parse(localStorage.getItem('downloadStats') || '{}');
+      const totalDownloads = Object.values(counts).reduce((sum, count) => sum + count, 0);
+
+      let statsHtml = '<strong>📊 Статистика скачувань:</strong><br>';
+      if (totalDownloads === 0) {
+        statsHtml += 'Скачувань ще немає.';
+      } else {
+        statsHtml += `<strong>Всього скачувань:</strong> ${totalDownloads}<br>`;
+        songs.forEach((song) => {
+          const count = counts[song.file] || 0;
+          if (count > 0) {
+            statsHtml += `${song.title}: ${count}<br>`;
+          }
+        });
+      }
+      statsContainer.innerHTML = statsHtml;
+    }
+
+    function updateSongCount(fileName) {
+      const count = getDownloadCount(fileName);
+      const countElements = document.querySelectorAll(`[data-file="${fileName}"] .download-count`);
+      countElements.forEach((el) => {
+        el.textContent = `Скачувань: ${count}`;
+      });
+    }
+
     songs.forEach((song) => {
       const songBlock = document.createElement('div');
       songBlock.className = 'song';
+      songBlock.setAttribute('data-file', song.file);
 
       const title = document.createElement('h3');
       title.textContent = song.title;
@@ -245,12 +334,19 @@
       button.textContent = 'Скачати';
       button.addEventListener('click', () => downloadSong(song.file, button));
 
+      const countEl = document.createElement('div');
+      countEl.className = 'download-count';
+      const count = getDownloadCount(song.file);
+      countEl.textContent = count > 0 ? `Скачувань: ${count}` : '';
+
       songBlock.appendChild(title);
       songBlock.appendChild(button);
+      songBlock.appendChild(countEl);
       songsContainer.appendChild(songBlock);
     });
 
     renderEmbeddedBrowserHint();
+    updateStats();
   </script>
 </body>
 </html>
